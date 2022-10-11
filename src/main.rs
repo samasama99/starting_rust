@@ -1,10 +1,10 @@
 #![allow(unused)]
 
 // use rand::Rng;
-// use std::cmp::Ordering;
-// use std::fs::File;
-// use std::io::{BufRead, BufReader, ErrorKind, Write};
-// use std::{io, string};
+use std::cmp::Ordering;
+use std::fs::File;
+use std::io::{BufRead, BufReader, ErrorKind, Write};
+use std::{f32::consts::PI, io, string};
 
 // fn main() {
 // simple read and write example ::
@@ -182,18 +182,318 @@
 //     println!("{} {}", x, f);
 // }
 // ownership
-fn ret_str(s: String) -> String {
-    // s
-    String::from("hello")
+// fn ret_str(s: String) -> String {
+//     // s
+//     String::from("hello")
+// }
+
+// fn main() {
+//     let s1 = String::from("test");
+//     // let s2 = s1;
+//     let s2 = ret_str(s1.clone());
+//     println!("{}", s2);
+// }
+
+// use std::collections::HashMap;
+
+// fn main() {
+//     let mut names = HashMap::new();
+//     names.insert("sama", 23);
+//     names.insert("test", 13);
+//     names.insert("not test", 33);
+//     for (k, v) in names.iter() {
+//         println!("{} {}", k, v);
+//     }
+//     if names.contains_key(&"sama") {
+//         println!("contained");
+//     }
+//     match names.get("test") {
+//         Some(x) => println!("h age is {}", x),
+//         None => println!("not here"),
+//     }
+//     match names.get("nah") {
+//         Some(x) => println!("h age is {}", x),
+//         None => println!("not here"),
+//     }
+// }
+
+// use std::fmt;
+// use std::fmt::*;
+
+// #[derive(Debug)]
+// struct Vector {
+//     x: f64,
+//     y: f64,
+//     z: f64,
+// }
+
+// impl fmt::Display for Vector {
+//     // This trait requires `fmt` with this exact signature.
+//     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+//         // Write strictly the first element into the supplied output
+//         // stream: `f`. Returns `fmt::Result` which indicates whether the
+//         // operation succeeded or failed. Note that `write!` uses syntax which
+//         // is very similar to `println!`.
+//         write!(f, "my print : {},{},{}\n", self.x, self.y, self.z)
+//     }
+// }
+
+// fn main() {
+//     let v = Vector {
+//         x: 1.2,
+//         y: 0.5,
+//         z: 0.0,
+//     };
+//     println!("{:#?}", v);
+//     println!("{:?}", v);
+//     println!("{}", v);
+//     println!("{}", v.to_string());
+
+//     struct Rec<T, U> {
+//         len: T,
+//         height: U,
+//     }
+//     let r = Rec {
+//         len: 4,
+//         height: 10.5,
+//     };
+// }
+
+// fn main() {
+//     trait Shape {
+//         fn new(len: f32, width: f32) -> Self;
+//         fn area(&self) -> f32;
+//     }
+
+//     struct Rec {
+//         len: f32,
+//         width: f32,
+//     };
+
+//     struct Circle {
+//         len: f32,
+//         width: f32,
+//     };
+
+//     impl Shape for Rec {
+//         fn new(len: f32, width: f32) -> Rec {
+//             Rec { len, width }
+//         }
+
+//         fn area(&self) -> f32 {
+//             self.len * self.width
+//         }
+//     }
+
+//     impl Shape for Circle {
+//         fn new(len: f32, width: f32) -> Circle {
+//             Circle { len, width }
+//         }
+
+//         fn area(&self) -> f32 {
+//             (self.len / 2.0).powf(2.0) * PI
+//         }
+//     }
+
+//     let r: Rec = Shape::new(10.0, 10.0);
+//     let c: Circle = Shape::new(10.0, 10.0);
+//     println!("{} {}", r.area(), c.area());
+// }
+
+// modules ::
+
+// mod restaurant;
+// use crate::restaurant::order_food;
+
+// fn main() {
+//     order_food();
+// }
+
+// ERRORS
+
+// fn main() {
+//     // panic!("Terrible Error");
+
+//     // let arr = [1, 2];
+//     // arr[2];
+
+//     let path = "lines.txt";
+//     let output = File::create(path);
+//     let mut output = match output {
+//         Ok(file) => file,
+//         Err(error) => panic!("Error :: creating file : {:?}", error),
+//     };
+//     writeln!(output, "Just testing !!").expect("failed to write to file");
+//     writeln!(output, "another line !!").expect("failed to write to file");
+//     writeln!(output, "Bye !!").expect("failed to write to file");
+
+//     let input = File::open(path).unwrap();
+//     let buffered = BufReader::new(input);
+
+//     for line in buffered.lines() {
+//         println!("{}", line.unwrap());
+//     }
+
+//     let output2 = match File::open("rand.txt") {
+//         Ok(file) => file,
+//         Err(error) => match error.kind() {
+//             ErrorKind::NotFound => match File::create("rand.txt") {
+//                 Ok(fc) => fc,
+//                 Err(e) => panic!("can't create file: {:?}", error),
+//             },
+//             _other_error => panic!("Problem opening file : {:?}", error),
+//         },
+//     };
+// }
+
+// iter ::
+
+// fn main() {
+// let mut arr = [1, 2, 3, 4];
+// for val in arr.iter() {
+//     println!("{}", val);
+// }
+// // arr.into_iter();
+// let mut iter1 = arr.iter();
+// println!("1st : {:?}", iter1.next());
+// println!("2st : {:?}", iter1.next());
+// println!("3st : {:?}", iter1.next());
+// println!("4st : {:?}", iter1.next());
+// println!("5st : {:?}", iter1.next());
+// }
+
+// colosure
+
+// fn main() {
+//     // let can_vote = |age: i32| age >= 18;
+//     // println!("can vote {}", can_vote(13));
+//     // println!("can vote {}", can_vote(23));
+
+//     // let mut samp1 = 5;
+//     // let print_var = || println!("samp1 = {}", samp1);
+//     // print_var();
+//     // samp1 = 10;
+//     // let mut change_value = || samp1 += 1;
+//     // change_value();
+//     // println!("samp1 = {}", samp1);
+
+//     fn use_func<T>(a: i32, b: i32, func: T) -> i32
+//     where
+//         T: Fn(i32, i32) -> i32,
+//     {
+//         func(a, b)
+//     }
+
+//     let sum = |a: i32, b: i32| a + b;
+//     let prod = |a: i32, b: i32| a * b;
+//     println!("{}", use_func(10, 10, sum));
+//     println!("{}", use_func(10, 10, prod))
+// }
+
+// Box :: smart pointer
+
+// fn main() {
+//     // let b_int1 = Box::new(10);
+//     // println!("{}", b_int1);
+
+//     // struct TreeNode<T> {
+//     //     pub left: TreeNode<T>,
+//     //     pub right: TreeNode<T>,
+//     //     pub key: T,
+//     // }
+//     struct TreeNode<T> {
+//         pub left: Option<Box<TreeNode<T>>>,
+//         pub right: Option<Box<TreeNode<T>>>,
+//         pub key: T,
+//     }
+//     impl<T> TreeNode<T> {
+//         pub fn new(key: T) -> Self {
+//             TreeNode {
+//                 left: None,
+//                 right: None,
+//                 key,
+//             }
+//         }
+//         pub fn left(mut self, node: TreeNode<T>) -> Self {
+//             self.left = Some(Box::new(node));
+//             self
+//         }
+//         pub fn right(mut self, node: TreeNode<T>) -> Self {
+//             self.right = Some(Box::new(node));
+//             self
+//         }
+//     }
+
+//     let node1 = TreeNode::new(1)
+//         .left(TreeNode::new(2))
+//         .right(TreeNode::new(3));
+// }
+
+use std::thread;
+use std::time::Duration;
+
+// fn main() {
+//     let th = thread::spawn(|| {
+//         for i in 1..25 {
+//             println!("Spawned thread : {}", i);
+//             thread::sleep(Duration::from_millis(1));
+//         }
+//     });
+//     for i in 1..20 {
+//         println!("Main thread : {}", i);
+//         thread::sleep(Duration::from_millis(1));
+//     }
+//     th.join().unwrap();
+// }
+
+pub struct Bank {
+    balance: f32,
 }
 
+// fn withdraw(the_bank: &mut Bank, amt: f32) {
+//     the_bank.balance -= amt;
+// }
+
+// fn customer(the_bank: &mut Bank) {
+//     withdraw(the_bank, 5.0);
+// }
+
+// fn main() {
+//     let mut b = Bank { balance: 100.0 };
+//     // withdraw(&mut b, 5.0);
+//     // println!("Balance : {}", b.balance);
+//     thread::spawn(|| customer(&mut b)).join().unwrap();
+// }
+
+fn withdraw(the_bank: &Arc<Mutex<Bank>>, amt: f32) {
+    let mut bank_ref = the_bank.lock().unwrap();
+    if (bank_ref.balance < 5.00) {
+        println!("Current balance : {} withdraw {}", bank_ref.balance, amt);
+    } else {
+        bank_ref.balance -= amt;
+        println!("Current balance : {} withdraw {}", bank_ref.balance, amt);
+    }
+}
+
+fn customer(the_bank: Arc<Mutex<Bank>>) {
+    withdraw(&the_bank, 5.0);
+}
+
+use std::cell::RefCell;
+use std::rc::Rc;
+use std::sync::{Arc, Mutex};
+
 fn main() {
-    let s1 = String::from("test");
-    // let s2 = s1;
-    let s2 = ret_str(s1.clone());
-    println!("{}", s2);
-    // io::stdin()
-    //     .read_line(&mut name)
-    //     .expect("didnt receive input");
-    // io::stdin().read_line(&mut name).unwrap();
+    let bank: Arc<Mutex<Bank>> = Arc::new(Mutex::new(Bank { balance: 100.0 }));
+    let handles = (0..20).map(|_| {
+        let bank_ref = bank.clone();
+        thread::spawn(|| {
+            customer(bank_ref);
+        })
+    });
+    for handle in handles {
+        handle.join();
+    }
+    println!("Total {}", bank.lock().unwrap().balance);
+    println!("done")
 }
