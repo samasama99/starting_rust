@@ -2,8 +2,10 @@
 
 // use rand::Rng;
 use std::cmp::Ordering;
+use std::env::args;
+use std::error::Error;
 use std::fs::File;
-use std::io::{BufRead, BufReader, ErrorKind, Write};
+use std::io::{BufRead, BufReader, ErrorKind, Read, Write};
 use std::{f32::consts::PI, io, string};
 
 // fn main() {
@@ -429,8 +431,8 @@ use std::{f32::consts::PI, io, string};
 //         .right(TreeNode::new(3));
 // }
 
-use std::thread;
-use std::time::Duration;
+// use std::thread;
+// use std::time::Duration;
 
 // fn main() {
 //     let th = thread::spawn(|| {
@@ -446,54 +448,134 @@ use std::time::Duration;
 //     th.join().unwrap();
 // }
 
-pub struct Bank {
-    balance: f32,
-}
-
-// fn withdraw(the_bank: &mut Bank, amt: f32) {
-//     the_bank.balance -= amt;
+// pub struct Bank {
+//     balance: f32,
 // }
 
-// fn customer(the_bank: &mut Bank) {
-//     withdraw(the_bank, 5.0);
+// // fn withdraw(the_bank: &mut Bank, amt: f32) {
+// //     the_bank.balance -= amt;
+// // }
+
+// // fn customer(the_bank: &mut Bank) {
+// //     withdraw(the_bank, 5.0);
+// // }
+
+// // fn main() {
+// //     let mut b = Bank { balance: 100.0 };
+// //     // withdraw(&mut b, 5.0);
+// //     // println!("Balance : {}", b.balance);
+// //     thread::spawn(|| customer(&mut b)).join().unwrap();
+// // }
+
+// fn withdraw(the_bank: &Arc<Mutex<Bank>>, amt: f32) {
+//     let mut bank_ref = the_bank.lock().unwrap();
+//     if (bank_ref.balance < 5.00) {
+//         println!("Current balance : {} withdraw {}", bank_ref.balance, amt);
+//     } else {
+//         bank_ref.balance -= amt;
+//         println!("Current balance : {} withdraw {}", bank_ref.balance, amt);
+//     }
 // }
+
+// fn customer(the_bank: Arc<Mutex<Bank>>) {
+//     withdraw(&the_bank, 5.0);
+// }
+
+// use std::cell::RefCell;
+// use std::rc::Rc;
+// use std::sync::{Arc, Mutex};
 
 // fn main() {
-//     let mut b = Bank { balance: 100.0 };
-//     // withdraw(&mut b, 5.0);
-//     // println!("Balance : {}", b.balance);
-//     thread::spawn(|| customer(&mut b)).join().unwrap();
+//     let bank: Arc<Mutex<Bank>> = Arc::new(Mutex::new(Bank { balance: 100.0 }));
+//     let handles = (0..20).map(|_| {
+//         let bank_ref = bank.clone();
+//         thread::spawn(|| {
+//             customer(bank_ref);
+//         })
+//     });
+//     for handle in handles {
+//         handle.join();
+//     }
+//     println!("Total {}", bank.lock().unwrap().balance);
+//     println!("done")
 // }
 
-fn withdraw(the_bank: &Arc<Mutex<Bank>>, amt: f32) {
-    let mut bank_ref = the_bank.lock().unwrap();
-    if (bank_ref.balance < 5.00) {
-        println!("Current balance : {} withdraw {}", bank_ref.balance, amt);
-    } else {
-        bank_ref.balance -= amt;
-        println!("Current balance : {} withdraw {}", bank_ref.balance, amt);
-    }
-}
+// use unicode_segmentation::UnicodeSegmentation;
 
-fn customer(the_bank: Arc<Mutex<Bank>>) {
-    withdraw(&the_bank, 5.0);
-}
+// fn main() {
+//     let s1 = "test"; // String Literal
+//     let s2 = String::from("test"); // allocated in the heap
+//     let s3 = s1.to_string();
+//     let s4 = s1.to_owned();
+//     let s5 = &s1[..];
 
-use std::cell::RefCell;
-use std::rc::Rc;
-use std::sync::{Arc, Mutex};
+//     let mut s = String::from("hello");
+//     s.push_str(" test");
+//     println!("{s}");
+//     s.replace_range(.., "hello world");
+//     println!("{s}");
+
+//     // let mut s1 = String::from("hello");
+//     // let s2 = String::from(" world");
+//     // s1 = s1 + &s2;
+
+//     let s1 = String::from("hello");
+//     let s2 = String::from(" world");
+//     let s3 = s1 + &s2;
+
+//     let s1 = String::from("hello");
+//     let s2 = String::from("world");
+//     let s3 = format!("{s1} {s2}!");
+//     println!("{s3}");
+
+//     let s1 = ["hello", "world"].concat();
+//     let s2 = ["hello", "world"].join(" ");
+//     let s3 = concat!("test", "hello");
+//     println!("{s1} {s2} {s3}");
+
+//     // indexing
+//     let s1 = "🤖🤖🤖🤖🤖 abcd";
+//     let s2 = &s1[0..4];
+//     println!("{s1} {s2}");
+
+//     for b in s1.bytes() {
+//         println!("{b}");
+//     }
+//     for b in s1.chars() {
+//         println!("{b}");
+//     }
+//     for b in s1.graphemes(true) {
+//         println!("{b}");
+//     }
+
+//     // this works bc of Type coercions
+//     let a = "hello".to_string();
+//     let b = "world".to_string();
+//     func(&a, &b);
+
+//     // Raw String Literals
+//     let json_string = r#"
+//     {
+//         "name": "sama",
+//         "age": "99"
+//     }"#;
+//     println!("{json_string}");
+// }
+
+// fn func(s1: &str, s2: &str) -> String {
+//     return format!("{s1} {s2}");
+// }
 
 fn main() {
-    let bank: Arc<Mutex<Bank>> = Arc::new(Mutex::new(Bank { balance: 100.0 }));
-    let handles = (0..20).map(|_| {
-        let bank_ref = bank.clone();
-        thread::spawn(|| {
-            customer(bank_ref);
-        })
-    });
-    for handle in handles {
-        handle.join();
+    let args = args().collect::<Vec<String>>();
+    if args.len() != 4 {
+        panic!("SFL :: File Target Replacement");
     }
-    println!("Total {}", bank.lock().unwrap().balance);
-    println!("done")
+    let (mut file, mut file2) = (
+        File::open(&args[1]).expect("can't open the target file"),
+        File::create(args[1].to_owned() + ".replace").expect("can't open the replace file"),
+    );
+    let mut content = String::new();
+    file.read_to_string(&mut content);
+    write!(file2, "{}", content.replace(&args[2], &args[3]));
 }
